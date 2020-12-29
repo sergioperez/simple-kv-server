@@ -8,7 +8,7 @@ RUN dnf install -y go --setopt=install_weak_deps=False && \
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/simple-kv-server /app/simple-kv-server.go
 
 
-FROM registry.access.redhat.com/ubi8/ubi-minimal
+FROM gcr.io/distroless/static
 ENV HOME=/app
 COPY --from=0 /app/simple-kv-server /app/simple-kv-server
 
