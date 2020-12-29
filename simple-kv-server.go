@@ -15,6 +15,7 @@ import (
 var mutex sync.Mutex
 var projectStatus map[string]string
 var dataTimestamp map[string]time.Time
+
 var usingTimestamp bool
 
 // Check erasable values every minute
@@ -66,9 +67,30 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, string(projects))
 }
 
+func metrics(w http.ResponseWriter, r *http.Request) {
+	// Count each value
+	metrics := make(map[string]int, 20)
+	for _, status := range projectStatus {
+		metrics[status]++
+	}
+
+	// Prepare answer
+	var output strings.Builder
+	for key, value := range metrics {
+		output.WriteString(fmt.Sprintf("%v %v\n", key, value))
+	}
+
+	fmt.Fprintf(w, output.String())
+}
+
 
 func handleRequests() {
 	http.HandleFunc("/", mainHandler)
+
+	exportMetrics, _ := strconv.ParseBool(os.Getenv("ENABLE_EXPORT_METRICS"))
+	if exportMetrics {
+		http.HandleFunc("/metrics", metrics)
+	}
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
