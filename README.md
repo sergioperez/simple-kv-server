@@ -8,7 +8,7 @@ go run simple-kv-server.go
 
 ## Env variables:
 ```
-MAX_KEY_AGE_SECONDS: Makes a 
+MAX_KEY_AGE_SECONDS: Number of seconds before a key is considered invalid
 ```
 
 
