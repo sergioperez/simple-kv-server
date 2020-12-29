@@ -1,5 +1,16 @@
 # Simple KV Server
 
+## Execute server
+
+```
+go run simple-kv-server.go
+```
+
+## Env variables:
+```
+MAX_KEY_AGE_SECONDS: Makes a 
+```
+
 
 ## Set a key:
 
